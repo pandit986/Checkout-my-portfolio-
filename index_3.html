@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Abhishek Pandit — Full Stack Developer (React.js • Python • FastAPI • MySQL)</title>
+<meta name="description" content="Abhishek Pandit — Full Stack Developer with 3.5+ years building enterprise SaaS. Builder of ConnexxAIQ's chatbot flow builder. React.js, Python, FastAPI, MySQL." />
+<meta property="og:title" content="Abhishek Pandit — Full Stack Developer" />
+<meta property="og:description" content="I build enterprise SaaS & WhatsApp chatbot automation. Talk to my bot, drag my career around, or find the hidden terminal." />
+<meta property="og:type" content="website" />
+<style>
+  :root {
+    --bg: #0a1020; --bg2: #0d1428; --panel: #111c33; --panel2: #16233f;
+    --line: #1e2d4d; --accent: #60a5fa; --green: #34d399; --purple: #a78bfa; --amber: #fbbf24;
+    --text: #e6edf7; --muted: #8ca3c7;
+    --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); line-height: 1.6; overflow-x: hidden; }
+  ::selection { background: rgba(96,165,250,.35); }
+
+  /* cursor glow (desktop) */
+  #glow {
+    position: fixed; width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(96,165,250,.07), transparent 60%);
+    pointer-events: none; z-index: 0; transform: translate(-50%,-50%); transition: opacity .3s;
+  }
+  @media (hover: none) { #glow { display: none; } }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 13px 5vw; background: rgba(10,16,32,.85); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .logo { font-family: var(--mono); font-size: 17px; color: var(--text); text-decoration: none; }
+  .logo b { color: var(--accent); }
+  .nav-links { display: flex; gap: 22px; align-items: center; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 14.5px; transition: color .2s; }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-links a.cta { color: #0a1020; background: var(--accent); padding: 6px 14px; border-radius: 8px; font-weight: 600; }
+  .term-btn {
+    font-family: var(--mono); font-size: 13px; color: var(--green); background: none;
+    border: 1px solid var(--line); border-radius: 7px; padding: 6px 11px; cursor: pointer; transition: border-color .2s;
+  }
+  .term-btn:hover { border-color: var(--green); }
+  @media (max-width: 700px) { .nav-links a:not(.cta) { display: none; } }
+
+  header { min-height: 100vh; display: flex; align-items: center; padding: 110px 5vw 60px; position: relative; }
+  #nodesbg { position: absolute; inset: 0; z-index: 0; opacity: .45; }
+  .hero-wrap { position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr .95fr; gap: 5vw; width: 100%; align-items: center; max-width: 1280px; margin: 0 auto; }
+  @media (max-width: 940px) { .hero-wrap { grid-template-columns: 1fr; } }
+
+  .kicker { font-family: var(--mono); color: var(--green); font-size: 14px; margin-bottom: 14px; }
+  .kicker .cursor { display: inline-block; width: 8px; height: 16px; background: var(--green); vertical-align: -2px; animation: caret 1s steps(1) infinite; }
+  @keyframes caret { 50% { opacity: 0; } }
+  h1 { font-size: clamp(34px, 4.8vw, 56px); line-height: 1.1; letter-spacing: -.02em; }
+  h1 .grad { background: linear-gradient(90deg, #60a5fa, #34d399, #a78bfa); background-size: 200%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: hue 6s linear infinite; }
+  @keyframes hue { 0%{background-position:0%} 50%{background-position:100%} 100%{background-position:0%} }
+  .hero-sub { color: var(--muted); margin: 18px 0 24px; max-width: 54ch; font-size: 16.5px; }
+  .hero-sub b { color: var(--text); }
+  .btn-row { display: flex; gap: 13px; flex-wrap: wrap; }
+  .btn { text-decoration: none; font-weight: 600; font-size: 14.5px; padding: 11px 20px; border-radius: 10px; transition: transform .15s; cursor: pointer; border: none; }
+  .btn:hover { transform: translateY(-2px); }
+  .btn.primary { background: var(--accent); color: #0a1020; }
+  .btn.ghost { border: 1px solid var(--line); color: var(--text); background: rgba(255,255,255,.02); }
+  .stats { display: flex; gap: 32px; margin-top: 36px; flex-wrap: wrap; }
+  .stat b { display: block; font-size: 26px; color: var(--accent); font-family: var(--mono); }
+  .stat span { color: var(--muted); font-size: 13px; }
+  .hint { margin-top: 26px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); opacity: .8; }
+  .hint kbd { border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 1px 6px; color: var(--green); font-family: var(--mono); }
+
+  /* ---------- live chat ---------- */
+  .chat { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,.5); max-width: 440px; width: 100%; justify-self: end; }
+  @media (max-width: 940px) { .chat { justify-self: center; } }
+  .chat-head { display: flex; align-items: center; gap: 12px; padding: 13px 16px; background: var(--panel2); border-bottom: 1px solid var(--line); }
+  .chat-avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg,#60a5fa,#34d399); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #0a1020; font-size: 15px; flex: none; }
+  .chat-head .who b { display: block; font-size: 14.5px; }
+  .chat-head .who span { font-size: 12px; color: var(--green); }
+  .chat-head .who span::before { content: "●"; margin-right: 5px; font-size: 9px; }
+  .chat-head .badge { margin-left: auto; font-family: var(--mono); font-size: 10.5px; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px; border-radius: 999px; }
+  .chat-body { padding: 16px; height: 330px; overflow-y: auto; display: flex; flex-direction: column; gap: 9px; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+  .msg { max-width: 86%; padding: 9px 13px; border-radius: 12px; font-size: 14px; opacity: 0; transform: translateY(8px); animation: pop .3s forwards; white-space: pre-line; }
+  .msg.bot { background: var(--panel2); border: 1px solid var(--line); border-bottom-left-radius: 4px; align-self: flex-start; }
+  .msg.user { background: #1d4ed8; border-bottom-right-radius: 4px; align-self: flex-end; }
+  .msg code { font-family: var(--mono); color: var(--green); font-size: 12.8px; }
+  .msg a { color: var(--accent); }
+  @keyframes pop { to { opacity: 1; transform: translateY(0); } }
+  .typing { display: inline-flex; gap: 4px; padding: 4px 2px; }
+  .typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); animation: blink 1s infinite; }
+  .typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+  @keyframes blink { 0%,80%,100%{opacity:.25} 40%{opacity:1} }
+  .quick { display: flex; gap: 7px; flex-wrap: wrap; padding: 10px 14px 4px; }
+  .quick button { background: none; border: 1px solid var(--accent); color: var(--accent); border-radius: 999px; padding: 6px 13px; font-size: 12.5px; cursor: pointer; transition: all .2s; }
+  .quick button:hover { background: var(--accent); color: #0a1020; }
+  .chat-input { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--line); background: var(--panel2); }
+  .chat-input input { flex: 1; background: var(--bg); border: 1px solid var(--line); border-radius: 9px; padding: 10px 13px; color: var(--text); font-size: 14px; outline: none; }
+  .chat-input input:focus { border-color: var(--accent); }
+  .chat-input button { background: var(--accent); border: none; color: #0a1020; border-radius: 9px; padding: 0 16px; font-weight: 700; cursor: pointer; font-size: 15px; }
+
+  section { padding: 88px 5vw; max-width: 1200px; margin: 0 auto; }
+  .sec-label { font-family: var(--mono); color: var(--accent); font-size: 14px; margin-bottom: 8px; }
+  .sec-label::before { content: "// "; color: var(--muted); }
+  h2 { font-size: clamp(26px, 3.2vw, 36px); margin-bottom: 12px; letter-spacing: -.01em; }
+  .sec-sub { color: var(--muted); margin-bottom: 34px; max-width: 62ch; }
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ---------- flow builder ---------- */
+  .flow-wrap {
+    position: relative; border: 1px solid var(--line); border-radius: 16px;
+    background:
+      linear-gradient(rgba(96,165,250,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(96,165,250,.05) 1px, transparent 1px),
+      var(--bg2);
+    background-size: 24px 24px, 24px 24px, auto;
+    height: 520px; overflow: hidden; user-select: none; touch-action: none;
+  }
+  .flow-wrap svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .flow-wrap svg path { stroke: var(--accent); stroke-width: 2; fill: none; opacity: .55; stroke-dasharray: 6 5; animation: dash 1.2s linear infinite; }
+  @keyframes dash { to { stroke-dashoffset: -22; } }
+  .fnode {
+    position: absolute; width: 215px; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 12px; padding: 13px 15px; cursor: grab; box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .fnode:active { cursor: grabbing; }
+  .fnode:hover { border-color: var(--accent); box-shadow: 0 14px 34px rgba(37,99,235,.25); }
+  .fnode .ntype { font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 5px; }
+  .fnode h4 { font-size: 14.5px; margin-bottom: 2px; }
+  .fnode .nwhen { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+  .fnode p { font-size: 12.3px; color: var(--muted); line-height: 1.45; }
+  .fnode .dot { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--bg); border: 2px solid var(--accent); }
+  .fnode .dot.in { left: -6px; top: 50%; transform: translateY(-50%); }
+  .fnode .dot.out { right: -6px; top: 50%; transform: translateY(-50%); }
+  .fnode.start .ntype { color: var(--green); } .fnode.start { border-left: 3px solid var(--green); }
+  .fnode.step .ntype { color: var(--accent); } .fnode.step { border-left: 3px solid var(--accent); }
+  .fnode.cond .ntype { color: var(--amber); } .fnode.cond { border-left: 3px solid var(--amber); }
+  .fnode.end .ntype { color: var(--purple); } .fnode.end { border-left: 3px solid var(--purple); border-style: dashed; }
+  .fnode.end a { color: var(--purple); font-weight: 600; text-decoration: none; font-size: 12.5px; }
+  .flow-hint { position: absolute; bottom: 12px; left: 14px; font-family: var(--mono); font-size: 11.5px; color: var(--muted); background: rgba(10,16,32,.7); padding: 4px 10px; border-radius: 6px; }
+  .flow-reset { position: absolute; top: 12px; right: 14px; font-family: var(--mono); font-size: 11.5px; color: var(--muted); background: rgba(10,16,32,.7); border: 1px solid var(--line); padding: 4px 10px; border-radius: 6px; cursor: pointer; }
+  .flow-reset:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* skills */
+  .skill-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; }
+  .skill-card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 22px; transition: border-color .25s, transform .25s; }
+  .skill-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .skill-card h3 { font-size: 15px; font-family: var(--mono); color: var(--accent); margin-bottom: 14px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips span { font-size: 12.8px; padding: 5px 12px; border-radius: 999px; background: rgba(96,165,250,.08); border: 1px solid var(--line); color: var(--muted); transition: all .2s; cursor: default; }
+  .chips span:hover { border-color: var(--green); color: var(--green); transform: scale(1.06); }
+
+  /* projects */
+  .proj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .proj { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 26px; display: flex; flex-direction: column; transition: border-color .25s, transform .25s; }
+  .proj:hover { border-color: var(--green); transform: translateY(-5px); }
+  .proj .icon { font-size: 30px; margin-bottom: 14px; }
+  .proj h3 { font-size: 18px; margin-bottom: 10px; }
+  .proj p { color: var(--muted); font-size: 14.6px; flex: 1; }
+  .proj .metrics { margin: 14px 0 0; display: flex; gap: 16px; flex-wrap: wrap; }
+  .proj .metrics b { color: var(--green); font-family: var(--mono); font-size: 15px; display: block; }
+  .proj .metrics span { font-size: 11.5px; color: var(--muted); }
+  .proj .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+  .proj .tags span { font-family: var(--mono); font-size: 11.8px; color: var(--accent); background: rgba(96,165,250,.09); padding: 4px 10px; border-radius: 6px; }
+  .proj .visit { margin-top: 16px; text-align: center; font-size: 13.5px; padding: 9px 16px; border: 1px solid var(--line); border-radius: 9px; color: var(--text); text-decoration: none; transition: border-color .2s; }
+  .proj .visit:hover { border-color: var(--green); color: var(--green); }
+
+  #contact { text-align: center; padding-bottom: 60px; }
+  #contact p { color: var(--muted); max-width: 55ch; margin: 0 auto 30px; }
+  .contact-links { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+  footer { text-align: center; padding: 24px; color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--line); font-family: var(--mono); }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  /* ---------- terminal ---------- */
+  #termWrap { position: fixed; inset: 0; background: rgba(5,9,18,.72); backdrop-filter: blur(4px); z-index: 100; display: none; align-items: center; justify-content: center; padding: 4vw; }
+  #termWrap.open { display: flex; }
+  .term { width: min(760px, 100%); height: min(460px, 80vh); background: #070c18; border: 1px solid var(--line); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+  .term-head { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: var(--panel2); border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+  .term-head i { width: 11px; height: 11px; border-radius: 50%; }
+  .term-head i:nth-child(1){background:#f87171;cursor:pointer}.term-head i:nth-child(2){background:#fbbf24}.term-head i:nth-child(3){background:#34d399}
+  .term-head span { margin-left: 8px; }
+  .term-body { flex: 1; overflow-y: auto; padding: 14px 16px; font-family: var(--mono); font-size: 13.2px; line-height: 1.7; color: #b9c8e4; }
+  .term-body .ln .p { color: var(--green); }
+  .term-body .ln .cmd { color: var(--text); }
+  .term-body .out a { color: var(--accent); }
+  .term-body .out .hl { color: var(--amber); }
+  .term-in { display: flex; gap: 8px; padding: 10px 16px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 13.2px; align-items: center; }
+  .term-in .p { color: var(--green); }
+  .term-in input { flex: 1; background: none; border: none; outline: none; color: var(--text); font-family: var(--mono); font-size: 13.2px; }
+</style>
+</head>
+<body>
+
+<div id="glow"></div>
+
+<nav>
+  <a class="logo" href="#top">&lt;<b>AP</b> /&gt;</a>
+  <div class="nav-links">
+    <a href="#flow">Career Flow</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <button class="term-btn" onclick="toggleTerm(true)">&gt;_ terminal</button>
+    <a class="cta" href="#contact">Hire Me</a>
+  </div>
+</nav>
+
+<header id="top">
+  <canvas id="nodesbg"></canvas>
+  <div class="hero-wrap">
+    <div>
+      <div class="kicker">$ whoami<span class="cursor"></span></div>
+      <h1>Abhishek Pandit<br /><span class="grad">Full Stack Developer</span></h1>
+      <p class="hero-sub">
+        I build <b>enterprise SaaS platforms</b> with <b>React.js, Python, FastAPI, and MySQL</b> —
+        including <b>ConnexxAIQ</b>, a WhatsApp chatbot automation platform, and a benefits platform serving
+        <b>100,000+ people daily</b>.
+      </p>
+      <div class="btn-row">
+        <a class="btn primary" href="#projects">See my work</a>
+        <a class="btn ghost" href="mailto:abhishekpandit986@gmail.com">Get in touch</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><b data-count="3.5" data-suffix="+">0</b><span>years experience</span></div>
+        <div class="stat"><b data-count="100" data-suffix="K+">0</b><span>daily users served</span></div>
+        <div class="stat"><b data-count="3" data-suffix="">0</b><span>enterprise products</span></div>
+      </div>
+      <div class="hint">psst — try the <kbd>&gt;_ terminal</kbd> in the nav, or just chat with my bot →</div>
+    </div>
+
+    <div class="chat" aria-label="Chat with AbhishekBot">
+      <div class="chat-head">
+        <div class="chat-avatar">AP</div>
+        <div class="who"><b>AbhishekBot</b><span>online — actually replies</span></div>
+        <div class="badge">built like ConnexxAIQ</div>
+      </div>
+      <div class="chat-body" id="chatBody"></div>
+      <div class="quick" id="chatQuick"></div>
+      <form class="chat-input" id="chatForm">
+        <input id="chatText" type="text" placeholder="Ask me anything… try 'skills'" autocomplete="off" maxlength="120" />
+        <button type="submit" aria-label="Send">➤</button>
+      </form>
+    </div>
+  </div>
+</header>
+
+<section id="flow">
+  <div class="sec-label">career.flow</div>
+  <h2 class="reveal">My career, as a chatbot flow</h2>
+  <p class="sec-sub reveal">I build drag-and-drop flow builders for a living — so here's my journey in one. <b style="color:var(--text)">Grab the nodes and drag them around.</b></p>
+  <div class="flow-wrap reveal" id="flowWrap">
+    <svg id="flowSvg"></svg>
+    <div class="fnode start" data-id="a" style="left:3%; top:38%">
+      <div class="ntype">▶ trigger</div>
+      <h4>Word Publishing</h4>
+      <div class="nwhen">2022 — 2023</div>
+      <p>First job. Healthcare app in React.js. Learned to ship.</p>
+      <div class="dot out"></div>
+    </div>
+    <div class="fnode step" data-id="b" style="left:27%; top:10%">
+      <div class="ntype">◆ action</div>
+      <h4>Fyntune Solution</h4>
+      <div class="nwhen">2023 — 2025</div>
+      <p>InsureTech platform, 100K+ daily users. React + React Native + APIs.</p>
+      <div class="dot in"></div><div class="dot out"></div>
+    </div>
+    <div class="fnode step" data-id="c" style="left:52%; top:52%">
+      <div class="ntype">◆ action</div>
+      <h4>Simple Logic — ConnexxAIQ</h4>
+      <div class="nwhen">2025 — now</div>
+      <p>Built the chatbot flow builder this section imitates. React, FastAPI, MySQL.</p>
+      <div class="dot in"></div><div class="dot out"></div>
+    </div>
+    <div class="fnode cond" data-id="d" style="left:74%; top:14%">
+      <div class="ntype">⧉ condition</div>
+      <h4>if (greatTeam &&</h4>
+      <div class="nwhen">interestingProblems)</div>
+      <p>…then route to next node ↓</p>
+      <div class="dot in"></div><div class="dot out"></div>
+    </div>
+    <div class="fnode end" data-id="e" style="left:78%; top:58%">
+      <div class="ntype">◼ next step</div>
+      <h4>Your company?</h4>
+      <div class="nwhen">2026 — …</div>
+      <p><a href="#contact">Connect this node → hire me</a></p>
+      <div class="dot in"></div>
+    </div>
+    <button class="flow-reset" id="flowReset">↺ reset layout</button>
+    <div class="flow-hint">drag nodes • edges follow • just like the real builder</div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="sec-label">skills</div>
+  <h2 class="reveal">What I work with</h2>
+  <div class="skill-groups">
+    <div class="skill-card reveal">
+      <h3>Frontend</h3>
+      <div class="chips"><span>React.js</span><span>TypeScript</span><span>JavaScript (ES6+)</span><span>Redux Toolkit</span><span>React Query</span><span>React Flow</span><span>Zod</span><span>Tailwind CSS</span><span>shadcn/ui</span><span>Material UI</span></div>
+    </div>
+    <div class="skill-card reveal">
+      <h3>Backend</h3>
+      <div class="chips"><span>Python</span><span>FastAPI</span><span>REST APIs</span><span>JWT Auth</span><span>OAuth2</span><span>WebSockets</span><span>Node.js</span><span>Express.js</span></div>
+    </div>
+    <div class="skill-card reveal">
+      <h3>Database</h3>
+      <div class="chips"><span>MySQL</span><span>SQL</span><span>Database Design</span><span>Query Optimization</span></div>
+    </div>
+    <div class="skill-card reveal">
+      <h3>Mobile & Tools</h3>
+      <div class="chips"><span>React Native</span><span>Git</span><span>Docker</span><span>Jenkins</span><span>Postman</span><span>Firebase</span><span>Jest</span><span>React Testing Library</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="sec-label">projects</div>
+  <h2 class="reveal">Things I've built</h2>
+  <div class="proj-grid">
+    <div class="proj reveal">
+      <div class="icon">💬</div>
+      <h3>ConnexxAIQ — Conversational AI Platform</h3>
+      <p>A live SaaS product for WhatsApp business automation, built end to end at Simple Logic — visual chatbot flow builder, every WhatsApp message type, broadcast campaigns, live agent chat, and analytics dashboards.</p>
+      <div class="metrics">
+        <div><b>11+</b><span>message types</span></div>
+        <div><b>7</b><span>core modules</span></div>
+      </div>
+      <div class="tags"><span>React.js</span><span>FastAPI</span><span>MySQL</span><span>React Flow</span></div>
+      <a class="visit" href="https://connexxaiq.com/" target="_blank" rel="noopener">Visit live product ↗</a>
+    </div>
+    <div class="proj reveal">
+      <div class="icon">🛡️</div>
+      <h3>Employee Benefits Platform</h3>
+      <p>InsureTech SaaS for brokers, employers, HRs, and employees — claims with real-time TPA sync, wellness programs, events, and role-based dashboards, on web and mobile.</p>
+      <div class="metrics">
+        <div><b>100K+</b><span>daily users</span></div>
+        <div><b>-25%</b><span>claim resolution time</span></div>
+        <div><b>+40%</b><span>engagement</span></div>
+      </div>
+      <div class="tags"><span>React.js</span><span>React Native</span><span>FastAPI</span><span>MySQL</span></div>
+    </div>
+    <div class="proj reveal">
+      <div class="icon">🩺</div>
+      <h3>Pregnancy Healthcare Platform</h3>
+      <p>Patient-facing healthcare app — personalized dashboards, appointment scheduling, medication reminders, health tracking, and a geolocation-based provider finder.</p>
+      <div class="metrics">
+        <div><b>6</b><span>care modules</span></div>
+      </div>
+      <div class="tags"><span>React.js</span><span>REST APIs</span><span>Geolocation</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="sec-label">contact</div>
+  <h2 class="reveal">Let's build something</h2>
+  <p class="reveal">I'm open to Full Stack (Python + React) opportunities. If you're hiring — or just want to talk chatbots, React, or FastAPI — my inbox is open. (My bot up top also takes messages, but I answer email faster.)</p>
+  <div class="contact-links reveal">
+    <a class="btn primary" href="mailto:abhishekpandit986@gmail.com">abhishekpandit986@gmail.com</a>
+    <a class="btn ghost" href="https://github.com/pandit986" target="_blank" rel="noopener">GitHub</a>
+    <a class="btn ghost" href="https://www.linkedin.com/in/abhishekpandit-dev" target="_blank" rel="noopener">LinkedIn</a>
+  </div>
+</section>
+
+<footer>
+  designed & built by <a href="#top">Abhishek Pandit</a> — React.js • Python • FastAPI • MySQL — <a href="#" onclick="toggleTerm(true);return false">open terminal</a>
+</footer>
+
+<!-- terminal -->
+<div id="termWrap" role="dialog" aria-label="Terminal">
+  <div class="term">
+    <div class="term-head"><i onclick="toggleTerm(false)" title="close"></i><i></i><i></i><span>abhishek@portfolio: ~</span></div>
+    <div class="term-body" id="termBody"></div>
+    <div class="term-in"><span class="p">➜ ~</span><input id="termText" autocomplete="off" spellcheck="false" /></div>
+  </div>
+</div>
+
+<script>
+/* ================= cursor glow ================= */
+const glow = document.getElementById("glow");
+addEventListener("mousemove", (e) => { glow.style.left = e.clientX + "px"; glow.style.top = e.clientY + "px"; });
+
+/* ================= animated counters ================= */
+const counters = document.querySelectorAll("[data-count]");
+const cio = new IntersectionObserver((es) => es.forEach((en) => {
+  if (!en.isIntersecting || en.target.done) return;
+  en.target.done = true;
+  const target = parseFloat(en.target.dataset.count), suf = en.target.dataset.suffix;
+  const t0 = performance.now();
+  (function tick(t) {
+    const k = Math.min(1, (t - t0) / 1200), v = target * (1 - Math.pow(1 - k, 3));
+    en.target.textContent = (target % 1 ? v.toFixed(1) : Math.round(v)) + suf;
+    if (k < 1) requestAnimationFrame(tick);
+  })(t0);
+}), { threshold: .6 });
+counters.forEach((c) => cio.observe(c));
+
+/* ================= LIVE CHATBOT ================= */
+const body = document.getElementById("chatBody");
+const quick = document.getElementById("chatQuick");
+const form = document.getElementById("chatForm");
+const input = document.getElementById("chatText");
+
+const ANSWERS = [
+  { k: ["skill","stack","tech","know"], a: "Frontend: <code>React.js</code>, <code>TypeScript</code>, Redux Toolkit, React Query, Tailwind.\nBackend: <code>Python</code> + <code>FastAPI</code>, REST APIs, JWT auth.\nDatabase: <code>MySQL</code>. Plus React Native for mobile. 🧰" },
+  { k: ["experience","work","job","career","year"], a: "3.5+ years across 3 companies:\n▹ Simple Logic IT — building ConnexxAIQ (now)\n▹ Fyntune — InsureTech, 100K+ daily users\n▹ Word Publishing — healthcare app\n\nDrag them around in the Career Flow section 👇" },
+  { k: ["project","built","connexx","whatsapp","chatbot","product"], a: "His flagship: <code>ConnexxAIQ</code> — WhatsApp chatbot automation. He built the drag-and-drop flow builder I was born in 🤖, plus the FastAPI backend and MySQL schemas.\n\n<a href='https://connexxaiq.com/' target='_blank' rel='noopener'>See it live ↗</a>" },
+  { k: ["contact","email","hire","reach","recruit","opportunit","opening","vacancy","interview"], a: "He's open to Full Stack (Python + React) roles! 🎯\n\n📧 <a href='mailto:abhishekpandit986@gmail.com'>abhishekpandit986@gmail.com</a>\n🔗 <a href='https://www.linkedin.com/in/abhishekpandit-dev' target='_blank'>LinkedIn</a> · <a href='https://github.com/pandit986' target='_blank'>GitHub</a>" },
+  { k: ["react"], a: "React is his home turf — hooks, Redux Toolkit, React Query, performance work (memoization, code splitting, lazy loading), and reusable component libraries. He even builds React Flow node editors." },
+  { k: ["python","fastapi","backend","api"], a: "On the backend he works in <code>Python + FastAPI</code>: REST services, JWT auth, role-based access, validation, async processing — powering high-volume WhatsApp messaging at ConnexxAIQ." },
+  { k: ["mysql","database","sql"], a: "MySQL: schema design, relationships, indexes, and query optimization for high-volume messaging and campaign data." },
+  { k: ["mobile","native","android","ios","app"], a: "He shipped Android & iOS apps with <code>React Native</code> at Fyntune — extending a 100K+ user platform to mobile." },
+  { k: ["where","location","mumbai","city","remote","relocat"], a: "Based in Navi Mumbai, India 🇮🇳 — open to Mumbai/Pune/Bengaluru and remote roles." },
+  { k: ["salary","ctc","pay"], a: "That's above my pay grade 😄 — email him: <a href='mailto:abhishekpandit986@gmail.com'>abhishekpandit986@gmail.com</a>" },
+  { k: ["hello","hi ","hey","namaste","hola"], a: "Hey! 👋 Ask me about his <code>skills</code>, <code>experience</code>, <code>projects</code>, or how to <code>hire</code> him." },
+  { k: ["who are you","what are you","bot","real"], a: "I'm a tiny rule-based bot — no AI API, just vanilla JS Abhishek wrote. The real product (ConnexxAIQ) is much smarter, I promise 😅" },
+  { k: ["resume","cv"], a: "Email him at <a href='mailto:abhishekpandit986@gmail.com?subject=Please share your resume'>abhishekpandit986@gmail.com</a> and he'll send the latest resume within the hour ⚡" },
+  { k: ["thank","cool","nice","great","awesome"], a: "🙌 If you build products and need someone who ships, you know where the Hire Me button is." },
+];
+const FALLBACK = "Hmm, I don't have a flow for that yet 😅 Try: <code>skills</code> · <code>experience</code> · <code>projects</code> · <code>hire</code>";
+
+function addMsg(cls, html) {
+  const el = document.createElement("div");
+  el.className = "msg " + cls;
+  el.innerHTML = html;
+  body.appendChild(el);
+  body.scrollTop = body.scrollHeight;
+  return el;
+}
+function botReply(text) {
+  const tb = addMsg("bot", '<span class="typing"><i></i><i></i><i></i></span>');
+  setTimeout(() => { tb.innerHTML = text; body.scrollTop = body.scrollHeight; }, 550 + Math.random() * 450);
+}
+function respond(raw) {
+  const q = " " + raw.toLowerCase() + " ";
+  const hit = ANSWERS.find((x) => x.k.some((k) => q.includes(k)));
+  botReply(hit ? hit.a : FALLBACK);
+}
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const v = input.value.trim();
+  if (!v) return;
+  addMsg("user", v.replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c])));
+  input.value = "";
+  respond(v);
+});
+const QUICKS = [
+  { l: "Skills 🧰", q: "skills" }, { l: "Experience 💼", q: "experience" },
+  { l: "Projects 🚀", q: "projects" }, { l: "Hire him ✉️", q: "hire" },
+];
+QUICKS.forEach((x) => {
+  const b = document.createElement("button");
+  b.textContent = x.l;
+  b.onclick = () => { addMsg("user", x.l); respond(x.q); };
+  quick.appendChild(b);
+});
+// intro
+setTimeout(() => botReply("Hey there 👋 I'm <b>AbhishekBot</b> — he builds bots like me for a living (ConnexxAIQ)."), 500);
+setTimeout(() => botReply("Type anything, or tap a chip below. I actually reply 👇"), 1900);
+
+/* ================= node background ================= */
+const cv = document.getElementById("nodesbg"), ctx = cv.getContext("2d");
+let pts = [];
+function resizeBG() {
+  cv.width = cv.offsetWidth * devicePixelRatio; cv.height = cv.offsetHeight * devicePixelRatio;
+  ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+  const n = Math.min(64, Math.floor(cv.offsetWidth / 24));
+  pts = Array.from({ length: n }, () => ({ x: Math.random() * cv.offsetWidth, y: Math.random() * cv.offsetHeight, vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35 }));
+}
+resizeBG(); addEventListener("resize", resizeBG);
+(function drawBG() {
+  ctx.clearRect(0, 0, cv.offsetWidth, cv.offsetHeight);
+  for (const p of pts) { p.x += p.vx; p.y += p.vy; if (p.x < 0 || p.x > cv.offsetWidth) p.vx *= -1; if (p.y < 0 || p.y > cv.offsetHeight) p.vy *= -1; }
+  for (let a = 0; a < pts.length; a++) for (let b2 = a + 1; b2 < pts.length; b2++) {
+    const dx = pts[a].x - pts[b2].x, dy = pts[a].y - pts[b2].y, d = Math.hypot(dx, dy);
+    if (d < 130) { ctx.strokeStyle = `rgba(96,165,250,${(1 - d / 130) * .15})`; ctx.beginPath(); ctx.moveTo(pts[a].x, pts[a].y); ctx.lineTo(pts[b2].x, pts[b2].y); ctx.stroke(); }
+  }
+  for (const p of pts) { ctx.fillStyle = "rgba(96,165,250,.4)"; ctx.beginPath(); ctx.arc(p.x, p.y, 1.7, 0, Math.PI * 2); ctx.fill(); }
+  requestAnimationFrame(drawBG);
+})();
+
+/* ================= FLOW BUILDER ================= */
+const wrap = document.getElementById("flowWrap");
+const svg = document.getElementById("flowSvg");
+const EDGES = [["a","b"],["b","c"],["c","d"],["d","e"]];
+const HOME = {};
+document.querySelectorAll(".fnode").forEach((n) => (HOME[n.dataset.id] = { left: n.style.left, top: n.style.top }));
+
+function port(node, side) {
+  const w = wrap.getBoundingClientRect(), r = node.getBoundingClientRect();
+  return { x: (side === "out" ? r.right : r.left) - w.left, y: r.top + r.height / 2 - w.top };
+}
+function drawEdges() {
+  let html = "";
+  for (const [f, t] of EDGES) {
+    const a = document.querySelector(`.fnode[data-id="${f}"]`), b2 = document.querySelector(`.fnode[data-id="${t}"]`);
+    if (!a || !b2) continue;
+    const p1 = port(a, "out"), p2 = port(b2, "in");
+    const dx = Math.max(40, Math.abs(p2.x - p1.x) * .5);
+    html += `<path d="M ${p1.x} ${p1.y} C ${p1.x + dx} ${p1.y}, ${p2.x - dx} ${p2.y}, ${p2.x} ${p2.y}" />`;
+  }
+  svg.innerHTML = html;
+}
+let drag = null;
+function startDrag(e, node) {
+  const pt = e.touches ? e.touches[0] : e;
+  const r = node.getBoundingClientRect();
+  drag = { node, ox: pt.clientX - r.left, oy: pt.clientY - r.top };
+  e.preventDefault();
+}
+function moveDrag(e) {
+  if (!drag) return;
+  const pt = e.touches ? e.touches[0] : e;
+  const w = wrap.getBoundingClientRect();
+  let x = pt.clientX - w.left - drag.ox, y = pt.clientY - w.top - drag.oy;
+  x = Math.max(0, Math.min(w.width - drag.node.offsetWidth, x));
+  y = Math.max(0, Math.min(w.height - drag.node.offsetHeight, y));
+  drag.node.style.left = x + "px"; drag.node.style.top = y + "px";
+  drawEdges();
+}
+document.querySelectorAll(".fnode").forEach((n) => {
+  n.addEventListener("mousedown", (e) => { if (e.target.tagName !== "A") startDrag(e, n); });
+  n.addEventListener("touchstart", (e) => { if (e.target.tagName !== "A") startDrag(e, n); }, { passive: false });
+});
+addEventListener("mousemove", moveDrag);
+addEventListener("touchmove", moveDrag, { passive: false });
+addEventListener("mouseup", () => (drag = null));
+addEventListener("touchend", () => (drag = null));
+document.getElementById("flowReset").onclick = () => {
+  document.querySelectorAll(".fnode").forEach((n) => { n.style.left = HOME[n.dataset.id].left; n.style.top = HOME[n.dataset.id].top; });
+  drawEdges();
+};
+addEventListener("resize", drawEdges);
+new IntersectionObserver((es) => es.forEach((x) => x.isIntersecting && drawEdges()), { threshold: .1 }).observe(wrap);
+setTimeout(drawEdges, 300);
+
+/* ================= reveal ================= */
+const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && e.target.classList.add("in")), { threshold: .12 });
+document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+
+/* ================= TERMINAL ================= */
+const termWrap = document.getElementById("termWrap");
+const termBody = document.getElementById("termBody");
+const termText = document.getElementById("termText");
+let termBooted = false;
+
+function toggleTerm(open) {
+  termWrap.classList.toggle("open", open);
+  if (open) {
+    termText.focus();
+    if (!termBooted) { termBooted = true; tOut("Welcome to AbhishekOS v3.5 🟢  Type <span class='hl'>help</span> to get started."); }
+  }
+}
+addEventListener("keydown", (e) => {
+  if (e.key === "`" && !e.target.closest("input")) { e.preventDefault(); toggleTerm(!termWrap.classList.contains("open")); }
+  if (e.key === "Escape") toggleTerm(false);
+});
+termWrap.addEventListener("click", (e) => { if (e.target === termWrap) toggleTerm(false); });
+
+function tLine(cmd) {
+  const el = document.createElement("div");
+  el.className = "ln";
+  el.innerHTML = `<span class="p">➜ ~</span> <span class="cmd">${cmd.replace(/[<>&]/g,(c)=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c]))}</span>`;
+  termBody.appendChild(el);
+}
+function tOut(html) {
+  const el = document.createElement("div");
+  el.className = "out";
+  el.innerHTML = html;
+  termBody.appendChild(el);
+  termBody.scrollTop = termBody.scrollHeight;
+}
+const CMDS = {
+  help: () => tOut("commands: <span class='hl'>whoami</span> · <span class='hl'>skills</span> · <span class='hl'>experience</span> · <span class='hl'>projects</span> · <span class='hl'>contact</span> · <span class='hl'>socials</span> · <span class='hl'>sudo hire abhishek</span> · <span class='hl'>clear</span> · <span class='hl'>exit</span>"),
+  whoami: () => tOut("abhishek — Full Stack Developer (React.js • Python • FastAPI • MySQL), Navi Mumbai, 3.5+ yrs, currently shipping ConnexxAIQ at Simple Logic IT."),
+  skills: () => tOut("frontend: react.js, typescript, redux-toolkit, react-query, react-flow, tailwind, shadcn/ui, zod<br>backend: python, fastapi, rest, jwt, oauth2, websockets, node.js, express.js<br>db: mysql, sql, query-optimization<br>tools: git, docker, jenkins, postman, firebase, jest, rtl"),
+  experience: () => tOut("[2025–now]  Simple Logic IT — ConnexxAIQ, WhatsApp chatbot automation (react+fastapi+mysql)<br>[2023–2025] Fyntune — InsureTech platform, 100K+ DAU, web + react-native mobile<br>[2022–2023] Word Publishing — healthcare app, react"),
+  projects: () => tOut("1. ConnexxAIQ — conversational AI platform → <a href='https://connexxaiq.com/' target='_blank'>connexxaiq.com</a><br>2. Employee Benefits Platform — 100K+ daily users, -25% claim time, +40% engagement<br>3. Pregnancy Healthcare Platform — dashboards, reminders, provider locator"),
+  contact: () => tOut("email: <a href='mailto:abhishekpandit986@gmail.com'>abhishekpandit986@gmail.com</a> — replies fast ⚡"),
+  socials: () => tOut("github: <a href='https://github.com/pandit986' target='_blank'>github.com/pandit986</a><br>linkedin: <a href='https://www.linkedin.com/in/abhishekpandit-dev' target='_blank'>linkedin.com/in/abhishekpandit-dev</a>"),
+  clear: () => (termBody.innerHTML = ""),
+  exit: () => toggleTerm(false),
+  ls: () => tOut("skills/  experience/  projects/  contact.txt  hire_me.sh"),
+  pwd: () => tOut("/home/abhishek/portfolio"),
+  "sudo hire abhishek": () => tOut("[sudo] password for recruiter: ********<br>✔ offer.pdf generated<br>✔ sending to <a href='mailto:abhishekpandit986@gmail.com?subject=We want to hire you'>abhishekpandit986@gmail.com</a>…<br><span class='hl'>Just kidding — but the email link works. 😄</span>"),
+};
+termText.addEventListener("keydown", (e) => {
+  if (e.key !== "Enter") return;
+  const v = termText.value.trim(); termText.value = "";
+  if (!v) return;
+  tLine(v);
+  const key = v.toLowerCase();
+  if (CMDS[key]) CMDS[key]();
+  else if (key.startsWith("sudo")) CMDS["sudo hire abhishek"]();
+  else tOut(`command not found: ${key.replace(/[<>&]/g,(c)=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c]))} — try <span class='hl'>help</span>`);
+  termBody.scrollTop = termBody.scrollHeight;
+});
+</script>
+</body>
+</html>
